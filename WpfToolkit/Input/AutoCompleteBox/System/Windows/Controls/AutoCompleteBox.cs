@@ -2323,6 +2323,10 @@ namespace System.Windows.Controls
                 _skipSelectedItemTextUpdate = true;
             }
             SelectedItem = selectedItem;
+            if (SelectionAdapter != null)
+            {
+                SelectionAdapter.SelectedItem = selectedItem;
+            }
 
             // Restore updates for TextSelection
             if (_ignoreTextSelectionChange)
@@ -2632,7 +2636,14 @@ namespace System.Windows.Controls
         /// <param name="e">The selection changed event data.</param>
         private void OnAdapterSelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            SelectedItem = _adapter.SelectedItem;
+            if (e.AddedItems.Count == 1)
+            {
+                SelectedItem = e.AddedItems[0];
+            }
+            else
+            {
+                SelectedItem = null;
+            }
         }
 
         /// <summary>
